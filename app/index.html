@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>MBTI 人格测试（在线版）</title>
+	<!-- 引入Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+    	body{background:#2b2b2b;padding-bottom:5rem;}
+    	h2,h5,label{color:white;}
+    	hr{border-color:white;}
+    	h5,label{font-size:1.1rem;}
+		.custom-radio{margin-left:1rem;min-height:2.5rem;}
+    </style>
+
+</head>
+<body>
+
+	<div class="container">
+        <h2 class="mt-5 text-center">MBTI 人格测试</h2>
+        <hr><br>
+        <form id="mbti">
+            <br><br>
+            <div class="text-center"><button type="submit" class="btn btn-lg btn-dark">查看结果</button></div>
+        </form>
+    </div>
+	
+    <!-- 引入jQuery和Bootstrap JS -->
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+    	
+    	$(function(){
+
+    		$.ajax({
+			    url:'json/data.json',
+			}).done(function(data) {
+			    var template = '<div class="form-group"><h5 class="mb-3">{question}</h5><div class="custom-control custom-radio"><input required type="radio" id="{no}a" name="{no}" value="{a.sort}" class="custom-control-input"><label class="custom-control-label" for="{no}a">{a.text}</label></div><div class="custom-control custom-radio"><input required type="radio" id="{no}b" name="{no}" value="{b.sort}" class="custom-control-input"><label class="custom-control-label" for="{no}b">{b.text}</label></div></div>';
+			    for (const [i, item] of data.reverse().entries()) {
+			    	var contents = template.replace('{question}', (40-i) + '. ' + item.question);
+			    	contents = contents.replace(/{no}/g, (40-i));
+			    	contents = contents.replace(/{a.sort}/g, item.options.a.sort);
+			    	contents = contents.replace(/{b.sort}/g, item.options.b.sort);
+			    	contents = contents.replace(/{a.text}/g, item.options.a.text);
+			    	contents = contents.replace(/{b.text}/g, item.options.b.text);
+			    	$('#mbti').prepend(contents);
+			    }
+			}).fail(function(xhr,status,error) {
+			    console.error('获取数据出错：'+status+', '+error);
+			});
+
+			$('#mbti').on('submit', function(event) {
+                // 阻止表单的默认提交行为
+                event.preventDefault();
+                // 计算16型人格
+                var E = $('input[value=E]:checked').length;
+                var I = $('input[value=I]:checked').length;
+                var S = $('input[value=S]:checked').length;
+                var N = $('input[value=N]:checked').length;
+                var T = $('input[value=T]:checked').length;
+                var F = $('input[value=F]:checked').length;
+                var J = $('input[value=J]:checked').length;
+                var P = $('input[value=P]:checked').length;
+                var result = '';
+                if (E>I) {
+                	result += 'E';
+                } else {
+                	result += 'I';
+                }
+                if (S>N) {
+                	result += 'S';
+                } else {
+                	result += 'N';
+                }
+                if (T>F) {
+                	result += 'T';
+                } else {
+                	result += 'F';
+                }
+                if (J>P) {
+                	result += 'J';
+                } else {
+                	result += 'P';
+                }
+                // 跳转到详情页
+                location.href = '/doc/'+result+'.html';
+            });
+
+    	});
+
+    </script>
+
+</body>
+</html>

@@ -1,11 +1,11 @@
 ## MBTI
 
-> 在线测试：[MBTI人格测试（在线版）](app/index.html)
+> 在线测试：[MBTI 人格测试（在线版）](app/index.html)
 
 ### 一、基础篇
 
-1. [MBTI理论基础](MBTI理论基础.html)
-2. [MBTI人格测试](MBTI人格测试.html)
+1. [MBTI 理论基础](MBTI 理论基础.html)
+2. [MBTI 人格测试](MBTI 人格测试.html)
 
 ### 二、分类篇
 
